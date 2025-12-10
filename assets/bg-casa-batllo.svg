@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#223344" />
+      <stop offset="100%" stop-color="#0e0e0e" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g2)" />
+  <text x="50%" y="50%" font-size="40" fill="#dcdcdc" font-family="Georgia, serif" text-anchor="middle" dominant-baseline="middle">Casa Batlló — placeholder</text>
+</svg>
