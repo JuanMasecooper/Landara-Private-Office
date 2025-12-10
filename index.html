@@ -6,18 +6,12 @@
   <title>Landara — Private Office</title>
   <link rel="stylesheet" href="style.css" />
   <!--
-    Hotlinked hero images (royalty-free):
-      - Madrid:    https://images.unsplash.com/photo-1506744038136-46273834b3fb
-      - Barcelona: https://images.unsplash.com/photo-1509228468518-180dd4864904
-      - Costa del Sol: https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg
+    Hero images: two uploaded to assets/ and one hotlink fallback.
+    - assets/Screenshot 2025-12-10 at 18.02.27.png  (uploaded)
+    - assets/Screenshot 2025-12-10 at 18.03.27.png  (uploaded)
+    - Costa del Sol hotlink: https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg
 
-    Si prefieres alojarlas localmente, súbelas a:
-      assets/madrid.jpg
-      assets/barcelona.jpg
-      assets/costa-del-sol.jpg
-    y reemplaza las rutas del array `slides` más abajo.
-
-    Opcional: para usar un video en la cabecera, añade assets/video.mp4 y poster assets/hero-fallback.jpg.
+    If you later want these hosted locally, replace the hotlink with a third uploaded file in assets/.
   -->
 </head>
 <body>
@@ -96,7 +90,7 @@
         <small>&copy; <span id="year"></span> Landara — Private Office. All rights reserved.</small>
         <div class="hero-credits" aria-hidden="false">
           <small>
-            Hero images: Jorge Fernández Salas (Unsplash), Daniel Corneschi (Unsplash), Pixabay (Pexels)
+            Hero images: uploaded by owner and Pixabay (Pexels)
           </small>
         </div>
       </div>
@@ -107,10 +101,10 @@
     // Insert current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Hotlinked slides (replace with local assets/* if you upload images)
+    // Use the two uploaded images plus a Costa del Sol hotlink
     const slides = [
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-      'https://images.unsplash.com/photo-1509228468518-180dd4864904',
+      'assets/Screenshot 2025-12-10 at 18.02.27.png',
+      'assets/Screenshot 2025-12-10 at 18.03.27.png',
       'https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg'
     ];
 
