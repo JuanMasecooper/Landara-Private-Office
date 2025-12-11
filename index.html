@@ -193,15 +193,13 @@
     // Insert current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // slides: use the uploaded filenames (spaces handled via encodeURI when creating URLs)
-    const slides = [
-    'assets/Casaindiano',
-    'assets/Casa LIS.jpg',
-    'assets/Pagodapalacio.jpg'
-  ];
-  // (el resto del script createSlides / showSlide / startSlideshow permanece igual)
-</script>assets/Screenshot 2025-12-10 at 18.02.27.png',
-      'assets/Screenshot 2025-12-10 at 18.03.27.png'
+   // lista de slides — usa los nombres tal cual están en assets
+const slides = [
+  'assets/Casaindiano.jpg',
+  'assets/Casa LIS.jpg',
+  'assets/Pagodapalacio.jpg',
+  'assets/Screenshot 2025-12-10 at 18.02.27.png',
+  'assets/Screenshot 2025-12-10 at 18.03.27.png'
     ];
 
     const slideshowContainer = document.getElementById('heroSlideshow');
