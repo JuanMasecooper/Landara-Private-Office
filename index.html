@@ -1,14 +1,17 @@
-<!doctype html>
+!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Landara Club</title>
+  <title>Landara — Private Office</title>
   <link rel="stylesheet" href="style.css" />
   <!--
-    Hero images: using the images uploaded to assets/
+    Hero images: use the images uploaded by the owner in assets/.
+    Current uploaded files used:
     - assets/Screenshot 2025-12-10 at 18.02.27.png
     - assets/Screenshot 2025-12-10 at 18.03.27.png
+
+    Note: file names contain spaces; the script uses encodeURI when loading them so renaming isn't strictly required.
   -->
 </head>
 <body>
@@ -18,7 +21,7 @@
     <div class="container header-inner">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true">L</span>
-        <span class="brand-name">Landara Club</span>
+        <span class="brand-name">Landara</span>
         <small class="brand-sub">Private Office</small>
       </div>
 
@@ -36,16 +39,17 @@
   </header>
 
   <header class="hero" role="banner" aria-label="Hero">
+    <!-- Optional local video -->
     <video id="heroVideo" class="hero__video" autoplay muted loop playsinline aria-hidden="true">
       <source src="assets/video.mp4" type="video/mp4" />
     </video>
 
-    <div class="hero__slideshow" id="heroSlideshow" aria-hidden="true" aria-live="polite"></div>
+    <div class="hero__slideshow" id="heroSlideshow" aria-hidden="true"></div>
     <div class="hero__overlay"></div>
 
     <div class="hero__content container">
-      <h1 class="site-title">Landara Club</h1>
-      <p class="site-sub">Private Office for Investors. Stewardship for investors</p>
+      <h1 class="site-title">Landara — Private Office</h1>
+      <p class="site-sub">Stewardship for legacy. Discretion in every detail.</p>
       <div class="hero__actions">
         <a class="btn" href="#invitation">Access by invitation</a>
         <a class="btn btn--ghost" href="#bi">Business Intelligence</a>
@@ -54,14 +58,130 @@
   </header>
 
   <main id="main">
-    <!-- (el resto del contenido permanece igual; services / bi / invitation / footer) -->
-    <!-- ... -->
+    <section id="philosophy" class="section philosophy" aria-labelledby="philosophy-title">
+      <div class="container reveal">
+        <h2 id="philosophy-title" class="section-title">Philosophy</h2>
+        <p class="lead">
+          At Landara we steward wealth across generations with unwavering discretion. Our mission:
+          preserve legacy, advise with clarity and deliver bespoke concierge services tailored to a life well-lived.
+        </p>
+      </div>
+    </section>
+
+    <section id="services" class="section services" aria-labelledby="services-title">
+      <div class="container reveal">
+        <h2 id="services-title" class="section-title">Services</h2>
+
+        <div class="services__grid">
+          <article class="service card">
+            <h3 class="service__title">Real Estate &amp; Private Investments</h3>
+            <p class="service__desc">Sourcing, structuring and managing exclusive opportunities across global markets.</p>
+            <a class="card-link" href="#bi">Insights</a>
+          </article>
+
+          <article class="service card">
+            <h3 class="service__title">Art, Collectibles &amp; Classic Cars</h3>
+            <p class="service__desc">Curatorial advisory, acquisition, conservation and discreet transactions.</p>
+            <a class="card-link" href="#bi">Valuation data</a>
+          </article>
+
+          <article class="service card">
+            <h3 class="service__title">Relocation, Education &amp; Lifestyle</h3>
+            <p class="service__desc">Concierge services for relocation, private education placement and lifestyle management.</p>
+            <a class="card-link" href="#invitation">Introduce</a>
+          </article>
+
+          <article class="service card">
+            <h3 class="service__title">Global Legal &amp; Wealth Structuring</h3>
+            <p class="service__desc">Cross‑border structuring, family governance and counsel coordinated with your advisors.</p>
+            <a class="card-link" href="#bi">Documentation</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="bi" class="section bi" aria-labelledby="bi-title">
+      <div class="container reveal">
+        <h2 id="bi-title" class="section-title">Business Intelligence</h2>
+        <p class="lead">Curated analytics and discreet reporting for your family office. Add charts, documents and notes below.</p>
+
+        <div class="bi-panel">
+          <aside class="bi-sidebar" role="navigation" aria-label="BI navigation">
+            <button class="bi-tab is-active" data-target="overview">Overview</button>
+            <button class="bi-tab" data-target="portfolio">Portfolio</button>
+            <button class="bi-tab" data-target="art">Art & Collectibles</button>
+            <button class="bi-tab" data-target="documents">Documents</button>
+          </aside>
+
+          <div class="bi-content">
+            <div id="overview" class="bi-pane is-active" role="region" aria-labelledby="bi-overview">
+              <h3>Overview</h3>
+              <p class="muted">Snapshot of high-level KPIs and recent activity.</p>
+              <div class="kpis">
+                <div class="kpi">
+                  <div class="kpi-value">€1.9B</div>
+                  <div class="kpi-label">AUM</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-value">6</div>
+                  <div class="kpi-label">Active Projects</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-value">3</div>
+                  <div class="kpi-label">Pending Transactions</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="portfolio" class="bi-pane" role="region" aria-labelledby="bi-portfolio">
+              <h3>Portfolio</h3>
+              <p class="muted">Detailed holdings, performance charts and allocation.</p>
+              <!-- Placeholder chart (SVG). Replace with your chart or embed an image here -->
+              <div class="chart-placeholder" aria-hidden="true">
+                <svg width="100%" height="180" viewBox="0 0 600 180" preserveAspectRatio="none" role="img" aria-label="placeholder chart">
+                  <rect width="100%" height="100%" fill="#0f0f0f" />
+                  <polyline points="0,150 60,120 120,100 180,90 240,110 300,70 360,80 420,50 480,60 540,40 600,30" stroke="#fff" stroke-opacity="0.8" stroke-width="3" fill="none"/>
+                </svg>
+              </div>
+            </div>
+
+            <div id="art" class="bi-pane" role="region" aria-labelledby="bi-art">
+              <h3>Art & Collectibles</h3>
+              <p class="muted">Inventory records, provenance notes and valuation history.</p>
+              <ul class="inventory">
+                <li><strong>Lot 001:</strong> Private collection — Classic car (1956)</li>
+                <li><strong>Lot 002:</strong> Painting — provenance available on request</li>
+              </ul>
+            </div>
+
+            <div id="documents" class="bi-pane" role="region" aria-labelledby="bi-docs">
+              <h3>Documents</h3>
+              <p class="muted">Secure documents can be listed here (link to secure channels).</p>
+              <div class="doc-list">
+                <a class="doc" href="#" aria-disabled="true">Family Governance — Overview (placeholder)</a>
+                <a class="doc" href="#" aria-disabled="true">Investment Memo — Private Opportunity</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="muted small">This Business Intelligence area is a placeholder — replace with your internal dashboards or embeds (charts, PDFs, links).</p>
+      </div>
+    </section>
+
+    <section id="invitation" class="section invitation" aria-labelledby="invitation-title">
+      <div class="container reveal">
+        <h2 id="invitation-title" class="section-title">Access by invitation only</h2>
+        <p class="lead">We operate by invitation to ensure privacy and an elevated client experience. For inquiries, please contact an introducer or reach out through a trusted referral.</p>
+        <p class="muted">No login or user database is maintained on this site.</p>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer" role="contentinfo">
     <div class="container footer__inner">
       <div>
-        <small>&copy; <span id="year"></span> Landara Club. All rights reserved.</small>
+        <small>&copy; <span id="year"></span> Landara — Private Office. All rights reserved.</small>
         <div class="hero-credits">
           <small>Hero images: uploaded by owner</small>
         </div>
@@ -73,7 +193,7 @@
     // Insert current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Slides: use the images that are in assets/ (uploaded by you)
+    // slides: use the uploaded filenames (spaces handled via encodeURI when creating URLs)
     const slides = [
       'assets/Screenshot 2025-12-10 at 18.02.27.png',
       'assets/Screenshot 2025-12-10 at 18.03.27.png'
@@ -84,7 +204,6 @@
     let slideshowInterval = null;
     let current = 0;
     const delay = 6000;
-    let userScrolled = false;
 
     function createSlides() {
       slides.forEach((src, idx) => {
@@ -98,11 +217,11 @@
           let focusY = '50%';
           if (ratio > 1.8) focusY = '35%';
           else if (ratio > 1.3) focusY = '42%';
-          s.style.backgroundImage = `url("${encodeURI(src)}")`;
+          s.style.backgroundImage = `url(\"${encodeURI(src)}\")`;
           s.style.backgroundPosition = `center ${focusY}`;
         };
         img.onerror = () => {
-          s.style.backgroundImage = `url("${encodeURI(src)}")`;
+          s.style.backgroundImage = `url(\"${encodeURI(src)}\")`;
           s.style.backgroundPosition = 'center 50%';
         };
 
@@ -113,19 +232,13 @@
       slideEls = slideshowContainer.querySelectorAll('.slide');
     }
 
-    function showSlide(index) {
-      if (!slideEls || slideEls.length === 0) return;
-      index = Math.max(0, Math.min(index, slideEls.length - 1));
-      slideEls.forEach((el, i) => el.classList.toggle('is-active', i === index));
-      current = index;
-    }
-
     function startSlideshow() {
-      if (slideshowInterval || userScrolled) return;
+      if (slideshowInterval) return;
       if (slideEls.length <= 1) return;
       slideshowInterval = setInterval(() => {
-        const next = (current + 1) % slideEls.length;
-        showSlide(next);
+        slideEls[current].classList.remove('is-active');
+        current = (current + 1) % slideEls.length;
+        slideEls[current].classList.add('is-active');
       }, delay);
       document.getElementById('slideshowToggle').textContent = 'Pause Slideshow';
       document.getElementById('slideshowToggle').setAttribute('aria-pressed','false');
@@ -142,33 +255,7 @@
       if (slideshowInterval) stopSlideshow(); else startSlideshow();
     });
 
-    // Scroll-driven slide: map scroll position to slide index
-    function onScrollDrivenSlide() {
-      userScrolled = true; // once user scrolls we pause auto-advancing
-      if (slideshowInterval) stopSlideshow();
-      const doc = document.documentElement;
-      const scrollTop = window.pageYOffset || doc.scrollTop;
-      const maxScroll = doc.scrollHeight - window.innerHeight;
-      const frac = maxScroll > 0 ? (scrollTop / maxScroll) : 0;
-      const index = Math.min(slides.length - 1, Math.floor(frac * slides.length));
-      showSlide(index);
-    }
-
-    // Throttle helper
-    function throttle(fn, wait) {
-      let last = 0;
-      return function(...args) {
-        const now = Date.now();
-        if (now - last >= wait) { last = now; fn.apply(this, args); }
-      };
-    }
-
-    // Init
-    createSlides();
-    setTimeout(() => { slideEls = slideshowContainer.querySelectorAll('.slide'); startSlideshow(); }, 140);
-    window.addEventListener('scroll', throttle(onScrollDrivenSlide, 120), { passive: true });
-
-    // Reveal on scroll (rest of page)
+    // Reveal on scroll
     function revealOnScroll() {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(el => {
@@ -188,6 +275,11 @@
         document.getElementById(target).classList.add('is-active');
       });
     });
+
+    // Init
+    createSlides();
+    setTimeout(() => { slideEls = slideshowContainer.querySelectorAll('.slide'); startSlideshow(); }, 140);
+    revealOnScroll();
   </script>
 </body>
 </html>
