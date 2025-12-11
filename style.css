@@ -52,8 +52,8 @@ body {
 /* HERO: framing improvements */
 .hero {
   position:relative;
-  /* slightly shorter height to avoid aggressive vertical crop on many screens */
-  min-height:66vh;
+  /* reduced height to avoid aggressive vertical crop on many screens */
+  min-height:55vh;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -100,7 +100,7 @@ body {
 /* ... (no changes below) ... */
 
 /* Sections */
-.section { padding:3rem 0; }
+.section { padding:3rem 0; scroll-margin-top: 96px; }
 .section-title { font-family: Georgia, serif; font-size:1.4rem; margin-bottom:0.6rem; color:var(--accent); }
 .lead { color:var(--muted); font-size:1.02rem; max-width:70ch; }
 
