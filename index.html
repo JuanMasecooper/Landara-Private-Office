@@ -150,7 +150,6 @@
       const scrollTop = window.pageYOffset || doc.scrollTop;
       const maxScroll = doc.scrollHeight - window.innerHeight;
       const frac = maxScroll > 0 ? (scrollTop / maxScroll) : 0;
-      // map fraction to slide index, ensure last slide reachable
       const index = Math.min(slides.length - 1, Math.floor(frac * slides.length));
       showSlide(index);
     }
@@ -169,7 +168,7 @@
     setTimeout(() => { slideEls = slideshowContainer.querySelectorAll('.slide'); startSlideshow(); }, 140);
     window.addEventListener('scroll', throttle(onScrollDrivenSlide, 120), { passive: true });
 
-    // Reveal on scroll (resto de la página)
+    // Reveal on scroll (rest of page)
     function revealOnScroll() {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(el => {
