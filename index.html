@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Landara Club</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/articles.css" />
   <!--
     Hero images: use the images uploaded by the owner in assets/.
     Current uploaded files used:
@@ -97,6 +98,8 @@
             <a class="card-link" href="#bi">Documentation</a>
           </article>
         </div>
+
+        <div id="insightsList" class="articles-grid"></div>
       </div>
     </section>
 
@@ -164,6 +167,8 @@
             </div>
           </div>
         </div>
+
+        <div id="onestopList" class="articles-grid"></div>
 
         <p class="muted small">This Business Intelligence area is a placeholder — replace with your internal dashboards or embeds (charts, PDFs, links).</p>
       </div>
@@ -284,5 +289,6 @@ const slides = [
     setTimeout(() => { slideEls = slideshowContainer.querySelectorAll('.slide'); startSlideshow(); }, 140);
     revealOnScroll();
   </script>
+  <script src="assets/articles.js"></script>
 </body>
 </html>
