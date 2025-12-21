@@ -273,11 +273,11 @@
           let focusY = '50%';
           if (ratio > 1.8) focusY = '35%';
           else if (ratio > 1.3) focusY = '42%';
-          s.style.backgroundImage = `url(\"${src}\")`;
+          s.style.backgroundImage = `url('${src}')`;
           s.style.backgroundPosition = `center ${focusY}`;
         };
         img.onerror = () => {
-          s.style.backgroundImage = `url(\"${src}\")`;
+          s.style.backgroundImage = `url('${src}')`;
           s.style.backgroundPosition = 'center 50%';
         };
 
