@@ -9,12 +9,12 @@
     Hero images: use the images uploaded by the owner in assets/.
     Current uploaded files used:
     - assets/Casa-LIS.jpg
-    - assets/Screenshot 2025-12-10 at 18.02.27.png
-    - assets/Screenshot 2025-12-10 at 18.03.27.png
+    - assets/Screenshot%202025-12-10%20at%2018.02.27.png (URL-encoded)
+    - assets/Screenshot%202025-12-10%20at%2018.03.27.png (URL-encoded)
     - assets/Casa-Interior.jpg
     - assets/Pagodapalacio.jpg
 
-    Note: file names contain spaces; the script uses encodeURI when loading them so renaming isn't strictly required.
+    Note: Screenshot filenames contain spaces and are URL-encoded in paths (%20 for spaces).
   -->
   <style>
     /* Pequeñas utilidades para el nuevo UI de productos. Ajusta en style.css si lo prefieres */
@@ -249,10 +249,10 @@
     // 2025
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // slides: use the uploaded filenames (spaces handled via encodeURI when creating URLs)
+    // slides: use the uploaded filenames (spaces URL-encoded as %20)
     const slides = [
-      'assets/Screenshot 2025-12-10 at 18.02.27.png',
-      'assets/Screenshot 2025-12-10 at 18.03.27.png'
+      'assets/Screenshot%202025-12-10%20at%2018.02.27.png',
+      'assets/Screenshot%202025-12-10%20at%2018.03.27.png'
     ];
 
     const slideshowContainer = document.getElementById('heroSlideshow');
@@ -267,17 +267,17 @@
         s.className = 'slide';
 
         const img = new Image();
-        img.src = encodeURI(src);
+        img.src = src;
         img.onload = () => {
           const ratio = img.naturalWidth / img.naturalHeight;
           let focusY = '50%';
           if (ratio > 1.8) focusY = '35%';
           else if (ratio > 1.3) focusY = '42%';
-          s.style.backgroundImage = `url(\"${encodeURI(src)}\")`;
+          s.style.backgroundImage = `url(\"${src}\")`;
           s.style.backgroundPosition = `center ${focusY}`;
         };
         img.onerror = () => {
-          s.style.backgroundImage = `url(\"${encodeURI(src)}\")`;
+          s.style.backgroundImage = `url(\"${src}\")`;
           s.style.backgroundPosition = 'center 50%';
         };
 
