@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -15,6 +16,21 @@
 
     Note: file names contain spaces; the script uses encodeURI when loading them so renaming isn't strictly required.
   -->
+  <style>
+    /* Pequeñas utilidades para el nuevo UI de productos. Ajusta en style.css si lo prefieres */
+    .product-controls { margin: 1rem 0; display:flex; gap:.5rem; flex-wrap:wrap; }
+    #productForm { border:1px solid rgba(255,255,255,0.06); padding:1rem; background:rgba(0,0,0,0.04); border-radius:6px; max-width:720px; }
+    #productForm input[type="text"], #productForm textarea { width:100%; padding:.5rem; margin:.25rem 0; border-radius:4px; border:1px solid #ccc; background:#fff; color:#000; }
+    #productForm label { font-weight:600; display:block; margin-top:.5rem; }
+    .product-list { display:flex; flex-direction:column; gap:1rem; margin-top:1rem; }
+    .product-card { display:flex; gap:1rem; padding:1rem; border-radius:6px; background:#121212; color:#fff; align-items:flex-start; }
+    .product-card img { width:160px; height:100px; object-fit:cover; border-radius:6px; }
+    .product-card .card-body { flex:1; }
+    .product-card .card-actions { display:flex; gap:.5rem; margin-top:.5rem; }
+    .muted.small { margin-top:1rem; display:block; color: #9a9a9a; }
+    .sr-only { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
+    .btn { cursor:pointer; }
+  </style>
 </head>
 <body>
   <a class="sr-only" href="#main">Saltar al contenido</a>
@@ -112,6 +128,7 @@
             <button class="bi-tab" data-target="portfolio">Portfolio</button>
             <button class="bi-tab" data-target="art">Art & Collectibles</button>
             <button class="bi-tab" data-target="documents">Documents</button>
+            <button class="bi-tab" data-target="products">Products</button>
           </aside>
 
           <div class="bi-content">
@@ -163,6 +180,44 @@
                 <a class="doc" href="#" aria-disabled="true">Investment Memo — Private Opportunity</a>
               </div>
             </div>
+
+            <!-- Products pane -->
+            <div id="products" class="bi-pane" role="region" aria-labelledby="bi-products">
+              <h3 id="bi-products">Products</h3>
+              <p class="muted">Publicar productos como si fueran artículos de blog. Guardado local (localStorage).</p>
+
+              <div class="product-controls">
+                <button id="addProductBtn" class="btn">Add product</button>
+                <small class="muted">Los artículos se guardan en el navegador. Para compartirlos o mantenerlos persistentes entre dispositivos, conecta un backend.</small>
+              </div>
+
+              <form id="productForm" style="display:none;" aria-hidden="true">
+                <input type="hidden" id="productId" value="">
+                <label for="productTitle">Título</label>
+                <input id="productTitle" type="text" placeholder="Título del producto" required>
+
+                <label for="productExcerpt">Extracto</label>
+                <textarea id="productExcerpt" rows="2" placeholder="Extracto corto"></textarea>
+
+                <label for="productContent">Contenido</label>
+                <textarea id="productContent" rows="6" placeholder="Contenido detallado (puedes pegar HTML simple si lo deseas)"></textarea>
+
+                <label for="productImage">Imagen (opcional, máximo 5 MB)</label>
+                <input id="productImage" type="file" accept="image/*">
+                <div id="imagePreview" aria-hidden="true" style="margin-top:.5rem;"></div>
+
+                <div style="margin-top:.5rem;">
+                  <button id="saveProductBtn" type="button" class="btn">Guardar</button>
+                  <button id="cancelProductBtn" type="button" class="btn btn--ghost">Cancelar</button>
+                  <span id="productFormMsg" style="margin-left:1rem;color:#f66;"></span>
+                </div>
+              </form>
+
+              <div id="productList" class="product-list" aria-live="polite"></div>
+
+              <p class="muted small">Uso local: si borras los datos del navegador se perderán los artículos. Para integración con servidor, puedo ayudarte a adaptar el formulario al endpoint que tengas.</p>
+            </div>
+
           </div>
         </div>
 
@@ -273,14 +328,232 @@
         btn.classList.add('is-active');
         const target = btn.dataset.target;
         document.querySelectorAll('.bi-pane').forEach(p => p.classList.remove('is-active'));
-        document.getElementById(target).classList.add('is-active');
+        const pane = document.getElementById(target);
+        if (pane) pane.classList.add('is-active');
       });
     });
 
-    // Init
+    // Init slideshow and reveal
     createSlides();
     setTimeout(() => { slideEls = slideshowContainer.querySelectorAll('.slide'); startSlideshow(); }, 140);
     revealOnScroll();
+
+    /* --------------------------
+       Products (client-side CRUD)
+       -------------------------- */
+    const STORAGE_KEY = 'landara_products';
+    const maxImageSize = 5 * 1024 * 1024; // 5 MB
+
+    const addProductBtn = document.getElementById('addProductBtn');
+    const productForm = document.getElementById('productForm');
+    const productIdEl = document.getElementById('productId');
+    const titleEl = document.getElementById('productTitle');
+    const excerptEl = document.getElementById('productExcerpt');
+    const contentEl = document.getElementById('productContent');
+    const imageInput = document.getElementById('productImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const saveProductBtn = document.getElementById('saveProductBtn');
+    const cancelProductBtn = document.getElementById('cancelProductBtn');
+    const productFormMsg = document.getElementById('productFormMsg');
+    const productList = document.getElementById('productList');
+
+    let imageDataUrl = null; // base64 data url for preview/storage
+
+    function getProducts() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error('Error reading products', e);
+        return [];
+      }
+    }
+
+    function saveProducts(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const items = getProducts();
+      productList.innerHTML = '';
+      if (!items.length) {
+        productList.innerHTML = '<div class="muted">No hay productos aún. Pulsa "Add product" para crear uno.</div>';
+        return;
+      }
+      items.slice().reverse().forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'product-card card';
+        const imgWrapper = document.createElement('div');
+        if (item.image) {
+          const img = document.createElement('img');
+          img.src = item.image;
+          img.alt = item.title || 'Imagen del producto';
+          imgWrapper.appendChild(img);
+        } else {
+          const placeholder = document.createElement('div');
+          placeholder.style.width = '160px';
+          placeholder.style.height = '100px';
+          placeholder.style.background = 'rgba(255,255,255,0.04)';
+          placeholder.style.borderRadius = '6px';
+          imgWrapper.appendChild(placeholder);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'card-body';
+        const h4 = document.createElement('h4');
+        h4.textContent = item.title;
+        const ex = document.createElement('p');
+        ex.textContent = item.excerpt || '';
+        ex.className = 'muted';
+        const contentDiv = document.createElement('div');
+        contentDiv.innerHTML = item.content ? item.content : '';
+        contentDiv.style.marginTop = '.5rem';
+
+        const actions = document.createElement('div');
+        actions.className = 'card-actions';
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => editProduct(item.id));
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn btn--ghost';
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', () => deleteProduct(item.id));
+
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+
+        body.appendChild(h4);
+        body.appendChild(ex);
+        body.appendChild(contentDiv);
+        body.appendChild(actions);
+
+        card.appendChild(imgWrapper);
+        card.appendChild(body);
+        productList.appendChild(card);
+      });
+    }
+
+    function resetForm() {
+      productIdEl.value = '';
+      titleEl.value = '';
+      excerptEl.value = '';
+      contentEl.value = '';
+      imageInput.value = '';
+      imageDataUrl = null;
+      imagePreview.innerHTML = '';
+      productFormMsg.textContent = '';
+    }
+
+    function openForm(editing=false) {
+      productForm.style.display = '';
+      productForm.setAttribute('aria-hidden','false');
+      titleEl.focus();
+      if (!editing) resetForm();
+    }
+
+    function closeForm() {
+      productForm.style.display = 'none';
+      productForm.setAttribute('aria-hidden','true');
+      resetForm();
+    }
+
+    addProductBtn.addEventListener('click', () => openForm(false));
+    cancelProductBtn.addEventListener('click', () => closeForm());
+
+    imageInput.addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) {
+        imageDataUrl = null;
+        imagePreview.innerHTML = '';
+        return;
+      }
+      if (f.size > maxImageSize) {
+        productFormMsg.textContent = 'Imagen demasiado grande (máx 5 MB).';
+        imageInput.value = '';
+        imageDataUrl = null;
+        imagePreview.innerHTML = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        imageDataUrl = reader.result;
+        imagePreview.innerHTML = `<img src="${imageDataUrl}" alt="Previsualización" style="max-width:220px;max-height:140px;border-radius:6px;">`;
+      };
+      reader.readAsDataURL(f);
+    });
+
+    saveProductBtn.addEventListener('click', () => {
+      const title = titleEl.value && titleEl.value.trim();
+      const excerpt = excerptEl.value && excerptEl.value.trim();
+      const content = contentEl.value && contentEl.value.trim();
+      if (!title) {
+        productFormMsg.textContent = 'El título es obligatorio.';
+        titleEl.focus();
+        return;
+      }
+      productFormMsg.textContent = '';
+
+      const products = getProducts();
+      const editingId = productIdEl.value;
+      if (editingId) {
+        // update
+        const idx = products.findIndex(p => String(p.id) === String(editingId));
+        if (idx > -1) {
+          products[idx].title = title;
+          products[idx].excerpt = excerpt;
+          products[idx].content = content;
+          if (imageDataUrl) products[idx].image = imageDataUrl;
+          saveProducts(products);
+        }
+      } else {
+        const newItem = {
+          id: Date.now(),
+          title,
+          excerpt,
+          content,
+          image: imageDataUrl || null,
+          created_at: new Date().toISOString()
+        };
+        products.push(newItem);
+        saveProducts(products);
+      }
+      closeForm();
+    });
+
+    function editProduct(id) {
+      const products = getProducts();
+      const item = products.find(p => String(p.id) === String(id));
+      if (!item) return;
+      productIdEl.value = item.id;
+      titleEl.value = item.title || '';
+      excerptEl.value = item.excerpt || '';
+      contentEl.value = item.content || '';
+      if (item.image) {
+        imageDataUrl = item.image;
+        imagePreview.innerHTML = `<img src="${imageDataUrl}" alt="Previsualización" style="max-width:220px;max-height:140px;border-radius:6px;">`;
+      } else {
+        imageDataUrl = null;
+        imagePreview.innerHTML = '';
+      }
+      openForm(true);
+      window.scrollTo({ top: productForm.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+    }
+
+    function deleteProduct(id) {
+      if (!confirm('Eliminar este producto? Esta acción no se puede deshacer.')) return;
+      let products = getProducts();
+      products = products.filter(p => String(p.id) !== String(id));
+      saveProducts(products);
+    }
+
+    // Inicializar lista
+    renderProducts();
+
+    // Observaciones:
+    // - Este almacenamiento es local al navegador. Para sincronizar entre usuarios/servidores necesitamos un endpoint (puedo ayudarte).
+    // - Si quieres limitar HTML permitido en content, conviene sanitizar antes de insertar (aquí usamos innerHTML tal cual para flexibilidad).
   </script>
 </body>
 </html>
