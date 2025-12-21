@@ -344,6 +344,61 @@
     const STORAGE_KEY = 'landara_products';
     const maxImageSize = 5 * 1024 * 1024; // 5 MB
 
+    // Seed initial product if none exists (create the article provided)
+    (function seedInitialProduct(){
+      try {
+        if (!localStorage.getItem(STORAGE_KEY)) {
+          const initial = [
+            {
+              id: Date.now(),
+              title: 'The Pyrenees: An Exclusive Safe Haven for Ultra-High-Net-Worth Real Estate Investment',
+              excerpt: 'In an increasingly volatile global environment, ultra-high-net-worth individuals are seeking destinations that combine capital preservation, lifestyle excellence, and long-term scarcity value.',
+              content: `
+                <p>In an increasingly volatile global environment, ultra-high-net-worth individuals are seeking destinations that combine capital preservation, lifestyle excellence, and long-term scarcity value. The Pyrenees, one of Europe’s most pristine and underdeveloped mountain regions, are emerging as a discreet yet powerful alternative for elite real estate investment—particularly for wealthy international buyers from the United States.</p>
+
+                <h4>LUXURY REAL ESTATE: A RARE AND SCARCE ASSET</h4>
+                <p>Luxury chalets in the Pyrenees represent true scarcity. Strict land-use regulations, protected natural parks, and limited buildable land ensure that supply will always remain constrained. Unlike mass-market Alpine destinations, the Pyrenees offer exclusivity, privacy, and architectural authenticity.</p>
+                <p>High-end chalets typically feature expansive plots, panoramic mountain views, ski-in/ski-out access near elite resorts, wellness areas (spa, sauna, indoor pools), wine cellars, and bespoke interiors. Properties are designed for buyers who value discretion over visibility and heritage over trend.</p>
+                <p>For American investors accustomed to Aspen, Jackson Hole, or Vail, the Pyrenees offer comparable natural beauty at a fraction of the entry price—while maintaining strong upside potential.</p>
+
+                <h4>A STRATEGIC REFUGE OF VALUE</h4>
+                <p>From an investment perspective, the Pyrenees function as a tangible store of value. Real assets in politically stable EU jurisdictions provide diversification away from dollar-denominated markets, equity volatility, and inflationary pressures.</p>
+                <p>Spain offers strong property rights, legal certainty, and residency options for non-EU investors. Combined with relatively low property taxes compared to other European luxury destinations, this makes the region particularly attractive for U.S.-based wealth preservation strategies.</p>
+                <p>Moreover, climate resilience is becoming a decisive factor. At higher altitudes, with abundant water resources and mild summer temperatures, the Pyrenees are increasingly seen as a long-term climate refuge within Europe.</p>
+
+                <h4>AN UNMATCHED LIFESTYLE: FOUR SEASONS OF ELITE LEISURE</h4>
+                <p>The Pyrenees deliver a four-season lifestyle that rivals any luxury mountain destination worldwide.</p>
+                <p>In winter, residents enjoy world-class skiing, heli-ski-style freeride terrain, private ski schools, and exclusive mountain restaurants. Major investments in snowmaking and resort infrastructure ensure reliability and premium services.</p>
+                <p>Spring and summer transform the region into a haven for hiking, fly fishing, cycling, horseback riding, and private guided excursions through national parks. Golf, wellness retreats, and Michelin-level gastronomy add to the refined leisure offering.</p>
+                <p>Autumn offers hunting, wine tourism, cultural festivals, and unmatched tranquility—appealing to buyers who prioritize privacy, reflection, and exclusivity.</p>
+
+                <h4>PRIVACY, SECURITY, AND DISCRETION</h4>
+                <p>One of the Pyrenees’ strongest selling points is privacy. Unlike globally exposed luxury destinations, the region remains under the radar, attracting a refined international clientele rather than mass tourism.</p>
+                <p>Low population density, gated developments, and strong local community ties create a secure environment ideal for high-profile individuals, family offices, and multigenerational estates.</p>
+
+                <h4>ACCESSIBILITY WITHOUT EXPOSURE</h4>
+                <p>Despite its exclusivity, the Pyrenees are easily accessible. Private jet arrivals via nearby international airports, helicopter transfers, and high-quality road infrastructure allow seamless travel from major European capitals while maintaining a sense of remoteness.</p>
+                <p>This balance—access without exposure—is increasingly rare in today’s luxury real estate landscape.</p>
+
+                <h4>CONCLUSION</h4>
+                <p>Investing in a luxury chalet in the Pyrenees is not merely a real estate decision—it is a strategic allocation into lifestyle, security, and long-term value preservation.</p>
+                <p>For ultra-wealthy American buyers seeking an exclusive European foothold, the Pyrenees offer what few regions can: scarcity, discretion, climate resilience, and an uncompromising quality of life.</p>
+                <p>In a world of uncertainty, the Pyrenees stand as a quiet stronghold of enduring value.</p>
+
+                <h4>An Off-Market Opportunity</h4>
+                <p>Currently, a rare private chalet is discreetly available in one of the most exclusive locations in the Pyrenees. This property is not publicly listed and is offered strictly on an off-market basis to a highly select circle of qualified buyers.</p>
+                <p>Details, location, and specifications are shared only upon request and after prior qualification. Price upon request.</p>
+                <p>For further information, private viewings, or confidential discussions, please let us know.</p>
+              `,
+              image: null,
+              created_at: new Date().toISOString()
+            }
+          ];
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+        }
+      } catch(e) { console.error('seed error', e); }
+    })();
+
     const addProductBtn = document.getElementById('addProductBtn');
     const productForm = document.getElementById('productForm');
     const productIdEl = document.getElementById('productId');
